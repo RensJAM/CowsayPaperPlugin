@@ -34,7 +34,7 @@ Example:
 /cowsay hello world
 
 Output:
-
+```text
  _______________
 < hello world >
  ---------------
@@ -43,6 +43,7 @@ Output:
             (__)\       )\/\
                 ||----w |
                 ||     ||
+```
 
 ## About
 
