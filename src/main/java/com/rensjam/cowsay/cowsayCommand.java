@@ -1,8 +1,10 @@
 package com.rensjam.cowsay;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class cowsayCommand implements CommandExecutor {
     @Override
@@ -19,15 +21,21 @@ public class cowsayCommand implements CommandExecutor {
         String bubbleMiddle = "< " + message + " >";
         String bubbleBottom = " " + "-".repeat(message.length() + 2);
 
-        sender.sendMessage(bubbleTop);
-        sender.sendMessage(bubbleMiddle);
-        sender.sendMessage(bubbleBottom);
+        String playerName = sender.getName();
 
-        sender.sendMessage("        \\   ^__^");
-        sender.sendMessage("         \\  (oo)\\_______");
-        sender.sendMessage("            (__)\\       )\\/\\");
-        sender.sendMessage("                ||----w |");
-        sender.sendMessage("                ||     ||");
+        for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+            allPlayers.sendMessage("<" + playerName + ">");
+
+            allPlayers.sendMessage(bubbleTop);
+            allPlayers.sendMessage(bubbleMiddle);
+            allPlayers.sendMessage(bubbleBottom);
+
+            allPlayers.sendMessage("       \\   ^__^");
+            allPlayers.sendMessage("        \\  (oo)\\_____");
+            allPlayers.sendMessage("           (__)\\       )\\/\\");
+            allPlayers.sendMessage("               ||----w |");
+            allPlayers.sendMessage("               ||        ||");
+        }
 
         return true;
     }
