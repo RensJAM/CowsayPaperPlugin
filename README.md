@@ -31,7 +31,8 @@ Download the latest `.jar` from Releases, place it in your `plugins` folder, and
 Displays a message in a speech bubble above a cow.
 
 Example:
-/cowsay hello world.
+/cowsay hello world
+
 Output:
 
  _______________
