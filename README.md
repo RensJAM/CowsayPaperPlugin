@@ -44,7 +44,7 @@ Output:
                 ||----w |
                 ||     ||
 
-### About
+## About
 
 CowsayPlugin is inspired by the Linux cowsay utility and brings it into Minecraft as a fun command.
 
@@ -52,6 +52,6 @@ CowsayPlugin is inspired by the Linux cowsay utility and brings it into Minecraf
 
 This project is licensed under the MIT License.
 
-### Author
+## Author
 
 RensJAM
