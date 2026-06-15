@@ -7,11 +7,44 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class cowsayCommand implements CommandExecutor {
+
+    private final Cowsay plugin;
+
+    public cowsayCommand(Cowsay plugin) {
+        this.plugin = plugin;
+    }
+
+    private boolean isGlobalEnabled() {
+        return plugin.getConfig().getBoolean("globalToggle", false);
+    }
+
+    private void setGlobalEnabled(boolean value) {
+        plugin.getConfig().set("globalToggle", value);
+        plugin.saveConfig();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (args.length == 0) {
             sender.sendMessage("§cUsage: /cowsay <message>");
+            sender.sendMessage("§cUsage: /cowsay globalToggle");
+            return true;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("globalToggle")) {
+
+            if (!sender.isOp() && !sender.hasPermission("cowsay.globaltoggle")) {
+                sender.sendMessage("§cOnly operators can do this.");
+                return true;
+            }
+
+            boolean newValue = !isGlobalEnabled();
+            setGlobalEnabled(newValue);
+
+            sender.sendMessage("§eGlobal cowsay mode is now "
+                    + (newValue ? "§aenabled" : "§cdisabled"));
+
             return true;
         }
 
@@ -23,21 +56,39 @@ public class cowsayCommand implements CommandExecutor {
 
         String playerName = sender.getName();
 
-        for (Player allPlayers : Bukkit.getOnlinePlayers()) {
-            allPlayers.sendMessage("<" + playerName + ">");
+        if (isGlobalEnabled()) {
 
-            allPlayers.sendMessage(bubbleTop);
-            allPlayers.sendMessage(bubbleMiddle);
-            allPlayers.sendMessage(bubbleBottom);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                sendCow(player, playerName, true, bubbleTop, bubbleMiddle, bubbleBottom);
+            }
 
-            allPlayers.sendMessage("       \\   ^__^");
-            allPlayers.sendMessage("        \\  (oo)\\_____");
-            allPlayers.sendMessage("           (__)\\       )\\/\\");
-            allPlayers.sendMessage("               ||----w |");
-            allPlayers.sendMessage("               ||        ||");
+        } else {
+
+            sendCow(sender, playerName, false, bubbleTop, bubbleMiddle, bubbleBottom);
         }
 
         return true;
     }
 
+    private void sendCow(CommandSender receiver,
+                         String playerName,
+                         boolean showName,
+                         String bubbleTop,
+                         String bubbleMiddle,
+                         String bubbleBottom) {
+
+        if (showName) {
+            receiver.sendMessage("<" + playerName + ">");
+        }
+
+        receiver.sendMessage(bubbleTop);
+        receiver.sendMessage(bubbleMiddle);
+        receiver.sendMessage(bubbleBottom);
+
+        receiver.sendMessage("       \\   ^__^");
+        receiver.sendMessage("        \\  (oo)\\_____");
+        receiver.sendMessage("           (__)\\       )\\/");
+        receiver.sendMessage("               ||----w |");
+        receiver.sendMessage("               ||        ||");
+    }
 }
